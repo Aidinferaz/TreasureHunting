@@ -15,6 +15,8 @@ public class Player extends Entity {
     public final int screenX;
     public final int screenY;
 
+    int hasKey = 0;
+
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
         this.keyH = keyH;
@@ -25,6 +27,8 @@ public class Player extends Entity {
         solidArea = new Rectangle();
         solidArea.x = 8;
         solidArea.y = 16;
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         solidArea.width = gp.tileSize - (solidArea.x * 2);
         solidArea.height = gp.tileSize - ((solidArea.y / 2) * 2);
 
@@ -74,6 +78,10 @@ public class Player extends Entity {
             collisionOn = false;
             gp.cCheker.checkTile(this);
 
+            // CHECK OBJECT COLLISION
+            int objIndex = gp.cCheker.checkObject(this, true);
+            pickUpObject(objIndex);
+
             // IF COLLISION IS FALSE, PLAYER CAN MOVE
             if (collisionOn == false) {
                 switch (direction){
@@ -101,6 +109,33 @@ public class Player extends Entity {
 
                 }
                 spriteCounter = 0;
+            }
+        }
+    }
+
+    public void pickUpObject(int i){
+        if(i != 999){
+            String objectName = gp.obj[i].name;
+
+            switch (objectName){
+                case "Key":
+                    gp.playSoundEffect(1);
+                    hasKey ++;
+                    gp.obj[i] = null;
+                    System.out.println("Key: " + hasKey);
+                    break;
+                    case "Door":
+                        if (hasKey > 0){
+                            gp.playSoundEffect(3);
+                            gp.obj[i] = null;
+                            hasKey--;
+                            System.out.println("Key: " + hasKey);
+                        }
+                        break;
+                case "Boots":
+                    gp.playSoundEffect(2);
+                    speed += 1.5;
+                    gp.obj[i] = null;
             }
         }
     }
