@@ -11,11 +11,10 @@ import java.io.IOException;
 public class Player extends Entity {
     GamePanel gp;
     KeyHandler keyH;
-
     public final int screenX;
     public final int screenY;
-
     public int hasKey = 0;
+    int idleCounter = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -109,6 +108,12 @@ public class Player extends Entity {
 
                 }
                 spriteCounter = 0;
+            }
+        } else {
+            idleCounter++;
+            if (idleCounter == 20) {
+                spriteNum = 1;
+                idleCounter = 0;
             }
         }
     }
