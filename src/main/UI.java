@@ -1,6 +1,8 @@
 package main;
 
+import object.OBJ_Heart;
 import object.OBJ_Key;
+import object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,10 +16,13 @@ public class UI {
     Graphics2D g2;
     Font maruMonica, purisaB;
 
+    BufferedImage heart_full, heart_half, heart_blank;
+
     public boolean messageOn = false;
     public String message = "";
     int messageCounter = 0;
     public String currentDialog = "";
+    public int commandNum = 0;
 
     public UI(GamePanel gp) {
         this.gp = gp;
@@ -31,6 +36,12 @@ public class UI {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        // CREATE HUD OBJECT
+        SuperObject heart = new OBJ_Heart(gp);
+        heart_full = heart.image;
+        heart_half = heart.image2;
+        heart_blank = heart.image3;
     }
 
     public void showMessage(String text){
@@ -44,9 +55,14 @@ public class UI {
         g2.setFont(maruMonica);
         g2.setColor(Color.WHITE);
 
+        // TITLE STATE
+        if (gp.gameState == gp.titleState){
+            drawTitleScreen();
+        }
+
         // PLAY STATE
         if (gp.gameState == gp.playState) {
-            // Do playState stuff later
+            drawPlayerLife();
         }
         // PAUSE STATE
         if (gp.gameState == gp.pauseState) {
@@ -56,6 +72,91 @@ public class UI {
         // DIALOG STATE
         if(gp.gameState == gp.dialogState){
             drawDialogScreen();
+        }
+    }
+
+    private void drawPlayerLife() {
+        int x = gp.tileSize / 2;
+        int y = gp.tileSize / 2;
+        int i = 0;
+
+        // DRAW MAX HEALTH
+        while (i < gp.player.maxLife/2) {
+            g2.drawImage(heart_blank, x, y, null);
+            i++;
+            x += gp.tileSize;
+        }
+
+        // RESET
+        x = gp.tileSize / 2;
+        y = gp.tileSize / 2;
+        i = 0;
+
+        // DRAW CURRENT LIFE
+        while (i < gp.player.life) {
+            g2.drawImage(heart_half, x, y, null);
+            i++;
+            if (i < gp.player.life) {
+                g2.drawImage(heart_full, x, y, null);
+            }
+            i++;
+            x += gp.tileSize;
+        }
+
+    }
+
+    private void drawTitleScreen() {
+
+        // TITLE BACKGROUND
+        g2.setColor(new Color(0,0,0));
+        g2.fillRect(0,0,gp.screenWidth,gp.screenHeight);
+
+        // TITLE NAME
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
+        String text = "Field of Keputih";
+        int x = getCenteredTextX(text);
+        int y = gp.tileSize * 3;
+
+        // SHADOW
+        g2.setColor(Color.GRAY);
+        int xOffset = 5;
+        int yOffset = 5;
+        g2.drawString(text,x + xOffset,y + yOffset);
+
+        // MAIN COLOR
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+
+        // BLUE BOY IMAGE
+        x = gp.screenWidth / 2 - ((gp.tileSize * 2) / 2);
+        y += gp.tileSize * 2;
+        g2.drawImage(gp.player.down1, x, y, gp.tileSize * 2, gp.tileSize * 2, null);
+
+        // MENU
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48f));
+
+        text = "NEW GAME";
+        x = getCenteredTextX(text);
+        y += gp.tileSize * 4;
+        g2.drawString(text, x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
+        text = "LOAD GAME";
+        x = getCenteredTextX(text);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if (commandNum == 1) {
+            g2.drawString(">", x - gp.tileSize, y);
+        }
+
+        text = "QUIT";
+        x = getCenteredTextX(text);
+        y += gp.tileSize;
+        g2.drawString(text, x, y);
+        if (commandNum == 2) {
+            g2.drawString(">", x - gp.tileSize, y);
         }
     }
 
@@ -91,6 +192,7 @@ public class UI {
     }
 
     public void drawPauseScreen() {
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48f));
         String text = "PAUSED";
         int x = getCenteredTextX(text);
         int y = gp.screenHeight/2 - 48;
