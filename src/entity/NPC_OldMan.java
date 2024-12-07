@@ -12,6 +12,7 @@ public class NPC_OldMan extends Entity{
         speed = 1;
 
         getImage();
+        setDialogue();
     }
 
     public void getImage(){
@@ -48,5 +49,17 @@ public class NPC_OldMan extends Entity{
 
             actionLockCounter = 0;
         }
+    }
+
+    public void setDialogue(){
+        dialogue[0] = "Hello, lad.";
+        dialogue[1] = "So you've come to this island to \nfind the treasure?";
+        dialogue[2] = "Hmmm.. there used to be many of \nyou Traveler that also seeking that treasure";
+        dialogue[3] = "They're never returned..";
+
+    }
+
+    public void speak() {
+        super.speak();
     }
 }

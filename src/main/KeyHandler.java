@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
     // DEBUG
     boolean checkDrawTime = false;
     public boolean checkHitBoxes = false;
@@ -22,46 +22,65 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_PAGE_UP) {
-            gp.zoomInOut(1);
-        }
-        if (code == KeyEvent.VK_PAGE_DOWN) {
-            gp.zoomInOut(-1);
-        }
-        if (code == KeyEvent.VK_T) {
-            if (!checkDrawTime) {
-                checkDrawTime = true;
-            } else if(checkDrawTime) {
-                checkDrawTime = false;
+
+        // PLAY STATE
+        if (gp.gameState == gp.playState){
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
+            }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_PAGE_UP) {
+                gp.zoomInOut(1);
+            }
+            if (code == KeyEvent.VK_PAGE_DOWN) {
+                gp.zoomInOut(-1);
+            }
+            if (code == KeyEvent.VK_T) {
+                if (!checkDrawTime) {
+                    checkDrawTime = true;
+                } else if(checkDrawTime) {
+                    checkDrawTime = false;
+                }
+            }
+            if (code == KeyEvent.VK_H) {
+                if (!checkHitBoxes) {
+                    checkHitBoxes = true;
+                } else if (checkHitBoxes) {
+                    checkHitBoxes = false;
+
+                }
+            }
+
+            if (code == KeyEvent.VK_ESCAPE) {
+                if (gp.gameState == gp.playState) {
+                    gp.gameState = gp.pauseState;
+                }
+            }
+
+            if (code == KeyEvent.VK_E) {
+                ePressed = true;
             }
         }
-        if (code == KeyEvent.VK_H) {
-            if (!checkHitBoxes) {
-                checkHitBoxes = true;
-            } else if (checkHitBoxes) {
-                checkHitBoxes = false;
 
-            }
-        }
-
-        if (code == KeyEvent.VK_ESCAPE) {
-            if (gp.gameState == gp.playState) {
+        // PAUSE STATE
+        else if (gp.gameState == gp.pauseState) {
+            if (code == KeyEvent.VK_ESCAPE) {
                 gp.gameState = gp.pauseState;
-            } else if (gp.gameState == gp.pauseState) {
-                gp.gameState = gp.playState;
+            }
+        }
 
+        // DIALOGUE STATE
+        else if (gp.gameState == gp.dialogState) {
+            if (code == KeyEvent.VK_E) {
+                gp.gameState = gp.playState;
             }
         }
     }
