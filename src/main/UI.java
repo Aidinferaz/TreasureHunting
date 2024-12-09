@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import object.OBJ_Egg;
 import object.OBJ_Heart;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ public class UI {
     Font maruMonica, purisaB;
 
     BufferedImage heart_full, heart_half, heart_blank;
+    BufferedImage egg;
 
     public boolean messageOn = false;
     public String message = "";
@@ -40,6 +42,10 @@ public class UI {
         heart_full = heart.image;
         heart_half = heart.image2;
         heart_blank = heart.image3;
+
+        // CREATE EGG HUD
+        Entity egg_obj = new OBJ_Egg(gp);
+        egg = egg_obj.down2;
     }
 
     public void showMessage(String text){
@@ -61,6 +67,7 @@ public class UI {
         // PLAY STATE
         if (gp.gameState == gp.playState) {
             drawPlayerLife();
+            drawEgg();
         }
         // PAUSE STATE
         if (gp.gameState == gp.pauseState) {
@@ -71,6 +78,17 @@ public class UI {
         if(gp.gameState == gp.dialogState){
             drawDialogScreen();
         }
+    }
+
+    private void drawEgg() {
+        int x = gp.tileSize * 13;
+        int y = gp.tileSize / 2;
+        int i = 0;
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 45f));
+        String text = "x " + gp.player.hasEgg;
+        g2.drawImage(egg, x, y, null);
+        g2.drawString(text, (int) (gp.tileSize * 14.2), (int) (gp.tileSize * 1.25));
     }
 
     private void drawPlayerLife() {

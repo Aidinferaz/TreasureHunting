@@ -14,7 +14,7 @@ public class Player extends Entity {
     KeyHandler keyH;
     public final int screenX;
     public final int screenY;
-//    public int hasKey = 0;
+    public int hasEgg = 0;
     int idleCounter = 0;
 
     public Player(GamePanel gp, KeyHandler keyH) {
@@ -161,6 +161,9 @@ public class Player extends Entity {
 
     public void pickUpObject(int i){
         if(i != 999){
+            hasEgg += 1;
+            gp.obj[i] = null;
+            System.out.println(hasEgg);
         }
     }
 

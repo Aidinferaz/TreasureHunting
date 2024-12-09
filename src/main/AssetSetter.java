@@ -15,6 +15,10 @@ public class AssetSetter {
         gp.obj[0] = new OBJ_Egg(gp);
         gp.obj[0].worldX = gp.tileSize * 39;
         gp.obj[0].worldY = gp.tileSize * 11;
+
+        gp.obj[1] = new OBJ_Egg(gp);
+        gp.obj[1].worldX = gp.tileSize * 23;
+        gp.obj[1].worldY = gp.tileSize * 36;
     }
 
     public void setNPC(){
