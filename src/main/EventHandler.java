@@ -84,9 +84,14 @@ public class EventHandler {
 
     public void healingPool(int col, int row, int gameState) {
         if (gp.keyH.ePressed) {
-            gp.gameState = gameState;
-            gp.ui.currentDialog = "You drink from pond of soul! \nYour health has been recovered!";
-            gp.player.life += 1;
+            if (gp.player.life < gp.player.maxLife) {
+                gp.gameState = gameState;
+                gp.ui.currentDialog = "You drink from pond of soul! \nYour health has been recovered!";
+                gp.player.life += 1;
+            } else {
+                gp.gameState = gameState;
+                gp.ui.currentDialog = "You've reached your max health!";
+            }
         }
     }
 }

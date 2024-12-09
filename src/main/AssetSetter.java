@@ -2,10 +2,8 @@ package main;
 
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
-import object.OBJ_Boots;
-import object.OBJ_Chest;
-import object.OBJ_Door;
-import object.OBJ_Key;
+import object.OBJ_Egg;
+import object.*;
 
 public class AssetSetter {
     GamePanel gp;
@@ -14,6 +12,9 @@ public class AssetSetter {
     }
 
     public void setObject(){
+        gp.obj[0] = new OBJ_Egg(gp);
+        gp.obj[0].worldX = gp.tileSize * 39;
+        gp.obj[0].worldY = gp.tileSize * 11;
     }
 
     public void setNPC(){
