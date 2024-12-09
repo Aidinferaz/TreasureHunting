@@ -25,6 +25,8 @@ public class Entity {
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
+    public boolean invincible = false;
+    public int invincibleCounter = 0;
 
     String dialogue[] = new String[20];
     int dialogueIndex = 0;
@@ -71,6 +73,8 @@ public class Entity {
         collisionOn = false;
         gp.cCheker.checkTile(this);
         gp.cCheker.checkObject(this, false);
+        gp.cCheker.checkEntity(this, gp.npc);
+        gp.cCheker.checkEntity(this, gp.monster);
         gp.cCheker.checkPlayer(this);
 
         if (collisionOn == false) {
@@ -88,6 +92,16 @@ public class Entity {
                     worldX += speed;
                     break;
             }
+        }
+        spriteCounter++;
+        if (spriteCounter > 12) {
+            if (spriteNum == 1) {
+                spriteNum = 2;
+            } else if (spriteNum == 2) {
+                spriteNum = 1;
+
+            }
+            spriteCounter = 0;
         }
     }
 
