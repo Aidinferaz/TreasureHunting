@@ -51,6 +51,14 @@ public class KeyHandler implements KeyListener {
             }
         }
 
+        if (gp.gameState == gp.transitionState) {
+            if (code == KeyEvent.VK_ENTER){
+                if (gp.ui.commandNum == 0){
+                    gp.restartGame();
+                }
+            }
+        }
+
         // PLAY STATE
         if (gp.gameState == gp.playState){
             if (code == KeyEvent.VK_W) {

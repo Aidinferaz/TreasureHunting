@@ -75,8 +75,13 @@ public class UI {
             drawPauseScreen();
         }
         // DIALOG STATE
-        if(gp.gameState == gp.dialogState){
+        if (gp.gameState == gp.dialogState){
             drawDialogScreen();
+        }
+
+        // WIN STATE
+        if (gp.gameState == gp.transitionState){
+            drawWinScreen();
         }
     }
 
@@ -183,7 +188,7 @@ public class UI {
         int width = gp.screenWidth - (gp.tileSize * 4);
         int height = gp.tileSize * 4;
 
-        drawSubWindow(x, y, width, height);
+        drawSubWindow(x, y, width, height, false);
 
         g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32));
         x += gp.tileSize;
@@ -195,16 +200,28 @@ public class UI {
         }
     }
 
-    public void drawSubWindow(int x, int y, int width, int height) {
-        Color c = new Color(0, 0, 0, 220);
-        g2.setColor(c);
-        g2.fillRoundRect(x, y, width, height, 35, 35);
+    public void drawSubWindow(int x, int y, int width, int height, boolean transition) {
+        if (transition) {
+            Color c = new Color(160, 106, 73, 225);
+            g2.setColor(c);
+            g2.fillRoundRect(x, y, width, height, 35, 35);
 
-        c = new Color(255, 255, 255);
-        g2.setStroke(new BasicStroke(5));
-        g2.setColor(c);
-        g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 35, 35);
+            c = new Color(75, 31, 28);
+            g2.setStroke(new BasicStroke(8));
+            g2.setColor(c);
+            g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 35, 35);
+        }
 
+        else {
+            Color c = new Color(0, 0, 0, 220);
+            g2.setColor(c);
+            g2.fillRoundRect(x, y, width, height, 35, 35);
+
+            c = new Color(255, 255, 255);
+            g2.setStroke(new BasicStroke(5));
+            g2.setColor(c);
+            g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 35, 35);
+        }
     }
 
     public void drawPauseScreen() {
@@ -214,6 +231,29 @@ public class UI {
         int y = gp.screenHeight/2 - 48;
 
         g2.drawString(text, x, y);
+    }
+
+    public void drawWinScreen() {
+        // WINDOW
+        int x = gp.screenWidth / 2 - ((gp.tileSize * 5) / 2);
+        int y = gp.screenHeight / 2 - ((gp.tileSize * 8) / 2);
+        int width = gp.tileSize * 5;
+        int height = gp.tileSize * 8;
+
+        drawSubWindow(x, y, width, height, true);
+
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32));
+        x += gp.tileSize;
+        y += gp.tileSize;
+
+        String text = "RESTART GAME";
+        x = getCenteredTextX(text);
+        y += gp.tileSize * 4;
+        g2.setColor(Color.WHITE);
+        g2.drawString(text, x, y);
+        if (commandNum == 0) {
+            g2.drawString(">", x - gp.tileSize / 2, y);
+        }
     }
 
     public int getCenteredTextX(String text){

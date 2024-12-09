@@ -163,7 +163,11 @@ public class Player extends Entity {
         if(i != 999){
             hasEgg += 1;
             gp.obj[i] = null;
-            System.out.println(hasEgg);
+            gp.playSoundEffect(1);
+
+            if (hasEgg == gp.obj.length){
+                gp.ui.gameFinished = true;
+            }
         }
     }
 

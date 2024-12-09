@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY & OBJECT
     public Player player = new Player(this, keyH);
-    public Entity[] obj = new Entity[10];
+    public Entity[] obj = new Entity[2]; // GANTI SESUAI DENGAN JUMLAH ENDOG
     public Entity[] npc = new Entity[10];
     public Entity[] monster = new Entity[20];
     ArrayList<Entity> entityList = new ArrayList<>();
@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialogState = 3;
+    public final int transitionState = 4;
 
     // SET PLAYER'S DEFAULT POSITION
     int playerX = 100;
@@ -74,6 +75,20 @@ public class GamePanel extends JPanel implements Runnable {
         aSetter.setNPC();
         aSetter.setMonster();
         gameState = titleState;
+    }
+
+    public void restartGame() {
+        player.worldX = tileSize * 23;
+        player.worldY = tileSize * 21;
+        player.speed = worldWidth / 600;
+        player.direction = "down";
+
+        // PLAYER STATUS
+        player.maxLife = 6;
+        player.life = player.maxLife;
+        player.hasEgg = 0;
+
+        gameState = playState;
     }
 
     public void zoomInOut(int i){
@@ -166,7 +181,12 @@ public class GamePanel extends JPanel implements Runnable {
                     obj[i].update();
                 }
             }
+
+            if (player.hasEgg == obj.length) {
+                gameState = transitionState;
+            }
         }
+
 
         if (gameState == pauseState){
             // Nothing
