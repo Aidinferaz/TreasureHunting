@@ -197,7 +197,14 @@ public class Player extends Entity {
                 }
                 break;
         }
+
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
         g2.drawImage(image, screenX, screenY, null);
+
+        // RESET ALPHA
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         // CHECK HITBOXES
         if (keyH.checkHitBoxes) {
