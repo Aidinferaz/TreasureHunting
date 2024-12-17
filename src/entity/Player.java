@@ -18,6 +18,7 @@ public class Player extends Entity {
     int idleCounter = 0;
     public boolean dead = false;
 
+
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
 
@@ -51,14 +52,22 @@ public class Player extends Entity {
     }
 
     public void getPlayerImage(){
-        up1 = setup("/player/boy_up_1");
-        up2 = setup("/player/boy_up_2");
-        down1 = setup("/player/boy_down_1");
-        down2 = setup("/player/boy_down_2");
-        left1 = setup("/player/boy_left_1");
-        left2 = setup("/player/boy_left_2");
-        right1 = setup("/player/boy_right_1");
-        right2 = setup("/player/boy_right_2");
+        up1 = setup("/player/Up_1");
+        up2 = setup("/player/Up_2");
+        up3 = setup("/player/Up_3");
+        up4 = setup("/player/Up_4");
+        down1 = setup("/player/Down_1");
+        down2 = setup("/player/Down_2");
+        down3 = setup("/player/Down_3");
+        down4 = setup("/player/Down_4");
+        left1 = setup("/player/Left_1");
+        left2 = setup("/player/Left_2");
+        left3 = setup("/player/Left_3");
+        left4 = setup("/player/Left_4");
+        right1 = setup("/player/Right_1");
+        right2 = setup("/player/Right_2");
+        right3 = setup("/player/Right_3");
+        right4 = setup("/player/Right_4");
     }
 
     public void update(){
@@ -126,10 +135,13 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         } else {
-            idleCounter++;
-            if (idleCounter == 20) {
-                spriteNum = 1;
-                idleCounter = 0;
+            idleCounter++;  // Increment idle counter
+            if (idleCounter > 20) { // Idle animation starts after some delay
+                idleCounter++;
+                if (idleCounter > 30) {
+                    spriteNum = spriteNum == 1 ? 2 : 1;
+                    idleCounter = 0;
+                }
             }
         }
 
@@ -182,36 +194,71 @@ public class Player extends Entity {
     public void draw(Graphics2D g2){
         BufferedImage image = null;
 
-        switch(direction){
-            case "up":
-                if (spriteNum == 1){
-                    image = up1;
-                } else {
-                    image = up2;
-                }
-                break;
-            case "down":
-                if (spriteNum == 1){
-                    image = down1;
-                } else {
-                    image = down2;
-                }
-                break;
-            case "left":
-                if (spriteNum == 1){
-                    image = left1;
-                } else {
-                    image = left2;
-                }
-                break;
-            case "right":
-                if (spriteNum == 1){
-                    image = right1;
-                } else {
-                    image = right2;
-                }
-                break;
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed){
+            switch(direction){
+                case "up":
+                    if (spriteNum == 1){
+                        image = up3;
+                    } else {
+                        image = up4;
+                    }
+                    break;
+                case "down":
+                    if (spriteNum == 1){
+                        image = down3;
+                    } else {
+                        image = down4;
+                    }
+                    break;
+                case "left":
+                    if (spriteNum == 1){
+                        image = left3;
+                    } else {
+                        image = left4;
+                    }
+                    break;
+                case "right":
+                    if (spriteNum == 1){
+                        image = right3;
+                    } else {
+                        image = right4;
+                    }
+                    break;
+            }
+        } else {
+            switch(direction){
+                case "up":
+                    if (spriteNum == 1){
+                        image = up1;
+                    } else {
+                        image = up2;
+                    }
+                    break;
+                case "down":
+                    if (spriteNum == 1){
+                        image = down1;
+                    } else {
+                        image = down2;
+                    }
+                    break;
+                case "left":
+                    if (spriteNum == 1){
+                        image = left1;
+                    } else {
+                        image = left2;
+                    }
+                    break;
+                case "right":
+                    if (spriteNum == 1){
+                        image = right1;
+                    } else {
+                        image = right2;
+                    }
+                    break;
+            }
         }
+
+
 
         if (invincible) {
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
