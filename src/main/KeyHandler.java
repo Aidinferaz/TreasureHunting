@@ -43,18 +43,31 @@ public class KeyHandler implements KeyListener {
                     gp.playMusic(0);
                 }
 
-                if (gp.ui.commandNum == 1){}
-
-                if (gp.ui.commandNum == 2){
+                if (gp.ui.commandNum == 1){
                     System.exit(0);
                 }
             }
         }
 
         if (gp.gameState == gp.transitionState) {
+            if (code == KeyEvent.VK_UP || code == KeyEvent.VK_W){
+                gp.ui.commandNum--;
+                if (gp.ui.commandNum < 0){
+                    gp.ui.commandNum = 2;
+                }
+            }
+            if (code == KeyEvent.VK_DOWN || code == KeyEvent.VK_S){
+                gp.ui.commandNum++;
+                if (gp.ui.commandNum > 2){
+                    gp.ui.commandNum = 0;
+                }
+            }
             if (code == KeyEvent.VK_ENTER){
                 if (gp.ui.commandNum == 0){
                     gp.restartGame();
+                }
+                if (gp.ui.commandNum == 1){
+                    System.exit(0);;
                 }
             }
         }
