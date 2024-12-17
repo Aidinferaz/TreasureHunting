@@ -87,8 +87,12 @@ public class GamePanel extends JPanel implements Runnable {
         player.maxLife = 6;
         player.life = player.maxLife;
         player.hasEgg = 0;
+        player.dead = false;
 
         gameState = playState;
+
+        aSetter.setObject();
+        aSetter.setMonster();
     }
 
     public void zoomInOut(int i){
@@ -185,6 +189,10 @@ public class GamePanel extends JPanel implements Runnable {
             if (player.hasEgg == obj.length) {
                 gameState = transitionState;
             }
+
+            if (player.dead) {
+                gameState = transitionState;
+            }
         }
 
 
@@ -250,9 +258,7 @@ public class GamePanel extends JPanel implements Runnable {
             }
 
             // EMPTY ENTITY LIST
-            for (int i = 0; i < entityList.size(); i++) {
-                entityList.remove(i);
-            }
+            entityList.clear();
 
             // UI
             ui.draw(g2);

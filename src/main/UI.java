@@ -79,7 +79,7 @@ public class UI {
             drawDialogScreen();
         }
 
-        // WIN STATE
+        // WIN / LOSE STATE
         if (gp.gameState == gp.transitionState){
             drawWinScreen();
         }
@@ -134,7 +134,7 @@ public class UI {
 
         // TITLE NAME
         g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96f));
-        String text = "Field of Keputih";
+        String text = "Keputih Ranch";
         int x = getCenteredTextX(text);
         int y = gp.tileSize * 3;
 
@@ -161,14 +161,6 @@ public class UI {
         y += gp.tileSize * 4;
         g2.drawString(text, x, y);
         if (commandNum == 0) {
-            g2.drawString(">", x - gp.tileSize, y);
-        }
-
-        text = "LOAD GAME";
-        x = getCenteredTextX(text);
-        y += gp.tileSize;
-        g2.drawString(text, x, y);
-        if (commandNum == 1) {
             g2.drawString(">", x - gp.tileSize, y);
         }
 
@@ -202,11 +194,11 @@ public class UI {
 
     public void drawSubWindow(int x, int y, int width, int height, boolean transition) {
         if (transition) {
-            Color c = new Color(160, 106, 73, 225);
+            Color c = new Color(0, 0, 0, 225);
             g2.setColor(c);
             g2.fillRoundRect(x, y, width, height, 35, 35);
 
-            c = new Color(75, 31, 28);
+            c = new Color(243, 243, 243);
             g2.setStroke(new BasicStroke(8));
             g2.setColor(c);
             g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 35, 35);
@@ -242,17 +234,38 @@ public class UI {
 
         drawSubWindow(x, y, width, height, true);
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32));
-        x += gp.tileSize;
-        y += gp.tileSize;
+        if (gp.player.dead) {
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32));
+            String text = "You Lose";
+            x = getCenteredTextX(text);
+            y += gp.tileSize * 2;
+            g2.drawString(text, x, y);
 
-        String text = "RESTART GAME";
-        x = getCenteredTextX(text);
-        y += gp.tileSize * 4;
-        g2.setColor(Color.WHITE);
-        g2.drawString(text, x, y);
-        if (commandNum == 0) {
-            g2.drawString(">", x - gp.tileSize / 2, y);
+            String text1 = "RESTART GAME";
+            x = getCenteredTextX(text1);
+            y += gp.tileSize * 4;
+            g2.setColor(Color.WHITE);
+            g2.drawString(text1, x, y);
+            if (commandNum == 0) {
+                g2.drawString(">", x - gp.tileSize / 2, y);
+            }
+        }
+
+        else {
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 32));
+            String text = "WIN";
+            x = getCenteredTextX(text);
+            y += gp.tileSize * 2;
+            g2.drawString(text, x, y);
+
+            String text1 = "RESTART GAME";
+            x = getCenteredTextX(text1);
+            y += gp.tileSize * 4;
+            g2.setColor(Color.WHITE);
+            g2.drawString(text1, x, y);
+            if (commandNum == 0) {
+                g2.drawString(">", x - gp.tileSize / 2, y);
+            }
         }
     }
 

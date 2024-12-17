@@ -16,6 +16,7 @@ public class Player extends Entity {
     public final int screenY;
     public int hasEgg = 0;
     int idleCounter = 0;
+    public boolean dead = false;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         super(gp);
@@ -139,13 +140,19 @@ public class Player extends Entity {
                 invincibleCounter = 0;
             }
         }
+
+        if (dead) {
+            gp.ui.gameFinished = true;
+        }
     }
 
     private void contactMonster(int monsterIndex) {
         if (monsterIndex != 999) {
-            if (invincible == false) {
+            if (!invincible && life > 0) {
                 life -= 1;
                 invincible = true;
+            } else if (life <= 0) {
+                dead = true;
             }
         }
     }
@@ -167,6 +174,7 @@ public class Player extends Entity {
 
             if (hasEgg == gp.obj.length){
                 gp.ui.gameFinished = true;
+                gp.playSoundEffect(4);
             }
         }
     }
@@ -204,7 +212,14 @@ public class Player extends Entity {
                 }
                 break;
         }
+
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
         g2.drawImage(image, screenX, screenY, null);
+
+        // RESET ALPHA
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
         // CHECK HITBOXES
         if (keyH.checkHitBoxes) {
