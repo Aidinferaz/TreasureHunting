@@ -44,7 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     // ENTITY & OBJECT
     public Player player = new Player(this, keyH);
-    public Entity[] obj = new Entity[2]; // GANTI SESUAI DENGAN JUMLAH ENDOG
+    public Entity[] obj = new Entity[8]; // GANTI SESUAI DENGAN JUMLAH ENDOG
     public Entity[] npc = new Entity[10];
     public Entity[] monster = new Entity[20];
     ArrayList<Entity> entityList = new ArrayList<>();

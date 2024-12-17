@@ -15,49 +15,63 @@ public class CollisionChecker {
         int entityTopWorldY = (int) (entity.worldY + entity.solidArea.y);
         int entityBottomWorldY = (int) (entity.worldY + entity.solidArea.y + entity.solidArea.height);
 
-        int entityLeftCol = entityLeftWorldX/gp.tileSize;
-        int entityRightCol = entityRightWorldX/gp.tileSize;
-        int entityTopRow = entityTopWorldY/gp.tileSize;
-        int entityBottomRow = entityBottomWorldY/gp.tileSize;
+        int entityLeftCol = entityLeftWorldX / gp.tileSize;
+        int entityRightCol = entityRightWorldX / gp.tileSize;
+        int entityTopRow = entityTopWorldY / gp.tileSize;
+        int entityBottomRow = entityBottomWorldY / gp.tileSize;
+
+        // Ensure indices are within bounds of the map
+        int maxCols = gp.tileM.mapTileNum.length - 1; // Last valid column index
+        int maxRows = gp.tileM.mapTileNum[0].length - 1; // Last valid row index
+
+        // Clamp indices to avoid ArrayIndexOutOfBoundsException
+        entityLeftCol = Math.max(0, Math.min(entityLeftCol, maxCols));
+        entityRightCol = Math.max(0, Math.min(entityRightCol, maxCols));
+        entityTopRow = Math.max(0, Math.min(entityTopRow, maxRows));
+        entityBottomRow = Math.max(0, Math.min(entityBottomRow, maxRows));
 
         int tileNum1, tileNum2;
 
-        switch(entity.direction){
+        switch (entity.direction) {
             case "up":
                 entityTopRow = (int) ((entityTopWorldY - entity.speed) / gp.tileSize);
+                entityTopRow = Math.max(0, Math.min(entityTopRow, maxRows)); // Re-clamp
                 tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
                 if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
                     entity.collisionOn = true;
                 }
                 break;
-                case "down":
-                    entityBottomRow = (int) ((entityBottomWorldY + entity.speed) / gp.tileSize);
-                    tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                    tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                    if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                        entity.collisionOn = true;
-                    }
-                    break;
-                    case "left":
-                        entityLeftCol = (int) ((entityLeftWorldX - entity.speed) / gp.tileSize);
-                        tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
-                        tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
-                        if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                            entity.collisionOn = true;
-                        }
-                        break;
-                        case "right":
-                            entityRightCol = (int) ((entityRightWorldX + entity.speed) / gp.tileSize);
-                            tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
-                            tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
-                            if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
-                                entity.collisionOn = true;
-                            }
-                            break;
-
+            case "down":
+                entityBottomRow = (int) ((entityBottomWorldY + entity.speed) / gp.tileSize);
+                entityBottomRow = Math.max(0, Math.min(entityBottomRow, maxRows)); // Re-clamp
+                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "left":
+                entityLeftCol = (int) ((entityLeftWorldX - entity.speed) / gp.tileSize);
+                entityLeftCol = Math.max(0, Math.min(entityLeftCol, maxCols)); // Re-clamp
+                tileNum1 = gp.tileM.mapTileNum[entityLeftCol][entityTopRow];
+                tileNum2 = gp.tileM.mapTileNum[entityLeftCol][entityBottomRow];
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
+                }
+                break;
+            case "right":
+                entityRightCol = (int) ((entityRightWorldX + entity.speed) / gp.tileSize);
+                entityRightCol = Math.max(0, Math.min(entityRightCol, maxCols)); // Re-clamp
+                tileNum1 = gp.tileM.mapTileNum[entityRightCol][entityTopRow];
+                tileNum2 = gp.tileM.mapTileNum[entityRightCol][entityBottomRow];
+                if (gp.tileM.tile[tileNum1].collision || gp.tileM.tile[tileNum2].collision) {
+                    entity.collisionOn = true;
+                }
+                break;
         }
     }
+
     public int checkObject(Entity entity, boolean player) {
         int index = 999;
 
